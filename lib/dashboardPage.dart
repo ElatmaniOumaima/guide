@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:guide/guide_page.dart'; // Ensure this is the correct path
+import 'package:guide/guide_page.dart';
+import 'package:guide/main.dart'; // Ensure this is the correct path
 
 void main() {
-  runApp(MyApp());
+  runApp(MyApp1());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -59,7 +60,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 30),
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 200),
                   child: GestureDetector(
@@ -106,14 +107,14 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(1.0),
             child: Column(
               children: [
                 Text(
                   'Explore your search',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
+                  style: TextStyle(color: Colors.white, fontSize:30,fontStyle:FontStyle.italic),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 40),
                 Column(
                   children: [
                     TextButton(
@@ -164,6 +165,11 @@ class _DashboardPageState extends State<DashboardPage> {
               icon: Icon(Icons.home, color: Colors.white, size: 32),
               onPressed: () {
                 // Implement home button functionality here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => myApp()),
+                );
               },
             ),
           ),

@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:958289027251:android:85ab4d4a254937d42d90c6",
+        "android_client_info": {
+          "package_name": "com.ahlanapp.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2p3RfQ6vf9cYJZLewcbHlhKpp3M89mV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:958289027251:android:6de502efca0ac33c2d90c6",
         "android_client_info": {
           "package_name": "com.example.guide"
