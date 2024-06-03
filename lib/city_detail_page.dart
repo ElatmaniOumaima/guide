@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'hotel_list_page.dart';  // Import your HotelsListPage
+import 'restaurant_list_page.dart';  // Import your RestaurantListPage
 
 class CityDetailPage extends StatefulWidget {
   final Map<String, dynamic> city;
@@ -104,8 +105,8 @@ class _CityDetailPageState extends State<CityDetailPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ElevatedButton(
                         onPressed: () {
@@ -118,11 +119,24 @@ class _CityDetailPageState extends State<CityDetailPage> {
                         },
                         child: Text('Check Hotels'),
                       ),
+                      SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
                           // Navigate to activities list
                         },
                         child: Text('Check Activities'),
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RestaurantListPage(city: widget.city['name']),
+                            ),
+                          );
+                        },
+                        child: Text('Check Restaurants'),
                       ),
                     ],
                   ),
