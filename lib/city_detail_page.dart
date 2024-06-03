@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'hotel_list_page.dart';  // Import your HotelsListPage
-import 'restaurant_list_page.dart';  // Import your RestaurantListPage
+import 'hotel_list_page.dart';
+import 'restaurant_list_page.dart';
+import 'activities.dart';
 
 class CityDetailPage extends StatefulWidget {
   final Map<String, dynamic> city;
@@ -110,11 +111,10 @@ class _CityDetailPageState extends State<CityDetailPage> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => HotelListPage(city: widget.city['name']),
-                            ),
+                            '/hotel_list',
+                            arguments: widget.city['name'],
                           );
                         },
                         child: Text('Check Hotels'),
@@ -122,18 +122,20 @@ class _CityDetailPageState extends State<CityDetailPage> {
                       SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          // Navigate to activities list
+                          Navigator.pushNamed(
+                            context,
+                            '/activities',
+                          );
                         },
                         child: Text('Check Activities'),
                       ),
                       SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => RestaurantListPage(city: widget.city['name']),
-                            ),
+                            '/restaurant_list',
+                            arguments: widget.city['name'],
                           );
                         },
                         child: Text('Check Restaurants'),

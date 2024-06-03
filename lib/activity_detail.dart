@@ -31,7 +31,7 @@ class ActivityDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ACTIVITES'),
+        title: Text('Activity Details'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -54,19 +54,10 @@ class ActivityDetail extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   SizedBox(height: 10),
-                  Text(
-                    description,
-                    style: TextStyle(fontSize: 16),
-                  ),
+                  Text(description, style: TextStyle(fontSize: 16)),
                   SizedBox(height: 20),
-                  Text(
-                    "Durée: $duration",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    "Prix: $price",
-                    style: TextStyle(fontSize: 16),
-                  ),
+                  Text('Duration: $duration', style: TextStyle(fontSize: 16)),
+                  Text('Price: $price', style: TextStyle(fontSize: 16)),
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
@@ -76,37 +67,13 @@ class ActivityDetail extends StatelessWidget {
                       backgroundColor: Colors.amber[800],
                       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                     ),
-                    child: Text(
-                      'Réservez sur Viator',
-                      style: TextStyle(fontSize: 16),
-                    ),
+                    child: Text('Book on Viator', style: TextStyle(fontSize: 16)),
                   ),
                 ],
               ),
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/icon1.jpg', height: 30),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/icon2.jpg', height: 30),
-            label: 'Activity',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/icon3.jpg', height: 30),
-            label: 'Stats',
-          ),
-        ],
-        currentIndex: 1, // Assuming this is the Activities tab
-        selectedItemColor: Colors.amber[800],
-        onTap: (index) {
-          // Handle navigation to other pages if necessary
-        },
       ),
     );
   }
