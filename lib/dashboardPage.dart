@@ -1,23 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guide/guide_page.dart';
-import 'city_search_page.dart'; // Ensure this is the correct path
-
-void main() {
-  runApp(MyApp1());
-}
-
-class MyApp1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Travel Dashboard',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: DashboardPage(), // Set the DashboardPage as the home
-    );
-  }
-}
+import 'city_search_page.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -27,8 +10,8 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int _currentIndex = 0;
   final List<String> _spots = [
-    'images/spot1.png', // Replace with your image assets
-    'images/spot2.png', // Replace with your image assets
+    'assets/images/spot1.png',
+    'assets/images/spot2.png',
   ];
 
   @override
@@ -127,7 +110,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         height: 150,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('images/guide.png'),
+                            image: AssetImage('assets/images/guide.png'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(12),
@@ -146,7 +129,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         height: 150,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('images/cities.png'),
+                            image: AssetImage('assets/images/cities.png'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(12),
@@ -166,7 +149,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 // Implement home button functionality here
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MyApp1()),
+                  MaterialPageRoute(builder: (context) => DashboardPage()),
                 );
               },
             ),
