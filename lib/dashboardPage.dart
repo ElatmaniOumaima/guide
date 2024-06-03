@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guide/guide_page.dart';
-import 'package:guide/main.dart'; // Ensure this is the correct path
+import 'city_search_page.dart'; // Ensure this is the correct path
 
 void main() {
   runApp(MyApp1());
@@ -88,8 +88,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       icon: Icon(Icons.arrow_left, color: Colors.white),
                       onPressed: () {
                         setState(() {
-                          _currentIndex = (_currentIndex - 1 + _spots.length) %
-                              _spots.length;
+                          _currentIndex = (_currentIndex - 1 + _spots.length) % _spots.length;
                         });
                       },
                     ),
@@ -112,7 +111,7 @@ class _DashboardPageState extends State<DashboardPage> {
               children: [
                 Text(
                   'Explore your search',
-                  style: TextStyle(color: Colors.white, fontSize:30,fontStyle:FontStyle.italic),
+                  style: TextStyle(color: Colors.white, fontSize: 30, fontStyle: FontStyle.italic),
                 ),
                 SizedBox(height: 40),
                 Column(
@@ -140,7 +139,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => CitiesPage()),
+                          MaterialPageRoute(builder: (context) => CitySearchPage()),
                         );
                       },
                       child: Container(
@@ -167,24 +166,13 @@ class _DashboardPageState extends State<DashboardPage> {
                 // Implement home button functionality here
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => myApp()),
+                  MaterialPageRoute(builder: (context) => MyApp1()),
                 );
               },
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class CitiesPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Cities')),
-      body: Center(child: Text('Cities Page')),
     );
   }
 }

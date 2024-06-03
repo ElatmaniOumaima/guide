@@ -39,6 +39,7 @@ dependencies:
   firebase_auth: ^4.20.0
   firebase_storage: ^11.7.7
   gallery_picker: ^0.5.1
+  cloud_firestore: ^4.17.5
 
 
 dev_dependencies:
