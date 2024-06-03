@@ -9,7 +9,7 @@ class CitySearchPage extends StatefulWidget {
 
 class _CitySearchPageState extends State<CitySearchPage> {
   String? _selectedCity;
-  List<Map<String, dynamic>> _cities = [];
+  List<Map<String, dynamic>> _allCities = [];
   final List<String> _mostVisitedCities = ['Fes', 'Marrakesh', 'Rabat', 'Tanger'];
 
   @override
@@ -19,10 +19,9 @@ class _CitySearchPageState extends State<CitySearchPage> {
   }
 
   void _fetchCities() async {
-    var citiesSnapshot = await FirebaseFirestore.instance.collection('cities')
-        .where('name', whereIn: _mostVisitedCities).get();
+    var citiesSnapshot = await FirebaseFirestore.instance.collection('cities').get();
     setState(() {
-      _cities = citiesSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      _allCities = citiesSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
     });
   }
 
@@ -60,7 +59,7 @@ class _CitySearchPageState extends State<CitySearchPage> {
                   _selectedCity = newValue;
                 });
               },
-              items: _cities.map<DropdownMenuItem<String>>((Map<String, dynamic> city) {
+              items: _allCities.map<DropdownMenuItem<String>>((Map<String, dynamic> city) {
                 return DropdownMenuItem<String>(
                   value: city['name'],
                   child: Text(city['name']),
@@ -71,8 +70,15 @@ class _CitySearchPageState extends State<CitySearchPage> {
             ElevatedButton(
               onPressed: () {
                 if (_selectedCity != null) {
-                  var selectedCityData = _cities.firstWhere((city) => city['name'] == _selectedCity);
-                  _navigateToCityDetailPage(selectedCityData);
+                  var selectedCityData =
+                      _allCities.firstWhere((city) => city['name'] == _selectedCity, orElse: () => {});
+                  if (selectedCityData.isNotEmpty) {
+                    _navigateToCityDetailPage(selectedCityData);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('City details not found')),
+                    );
+                  }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Please select a city')),
@@ -95,27 +101,32 @@ class _CitySearchPageState extends State<CitySearchPage> {
                   crossAxisSpacing: 8.0,
                   mainAxisSpacing: 8.0,
                 ),
-                itemCount: _cities.length,
+                itemCount: _mostVisitedCities.length,
                 itemBuilder: (context, index) {
-                  var city = _cities[index];
-                  return GestureDetector(
-                    onTap: () => _navigateToCityDetailPage(city),
-                    child: GridTile(
-                      child: Image.network(
-                        city['images'][0],
-                        fit: BoxFit.cover,
-                      ),
-                      footer: GridTileBar(
-                        backgroundColor: Colors.black54,
-                        title: Text(city['name'], style: TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Text(
-                          city['description'].length > 50
-                              ? city['description'].substring(0, 50) + '...'
-                              : city['description'],
+                  var cityName = _mostVisitedCities[index];
+                  var city = _allCities.firstWhere((city) => city['name'] == cityName, orElse: () => {});
+                  if (city.isNotEmpty) {
+                    return GestureDetector(
+                      onTap: () => _navigateToCityDetailPage(city),
+                      child: GridTile(
+                        child: Image.network(
+                          city['images'][0],
+                          fit: BoxFit.cover,
+                        ),
+                        footer: GridTileBar(
+                          backgroundColor: Colors.black54,
+                          title: Text(city['name'], style: TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Text(
+                            city['description'].length > 50
+                                ? city['description'].substring(0, 50) + '...'
+                                : city['description'],
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    return Container(); // Return an empty container if city details not found
+                  }
                 },
               ),
             ),
