@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:guide/dashboardPage.dart';
+import 'package:guide/sign_up.dart';
+
+import 'sign_in.dart';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage(), debugShowCheckedModeBanner: false);
+    return MaterialApp(home: HomePage(), debugShowCheckedModeBanner: true);
   }
 }
 
@@ -40,7 +43,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Spacer(),
                 Image.asset(
-                  'images/morocco.png', // Correct the image path
+                  'assets/images/morocco.png', // Correct the image path
                   height: 350,
                 ),
                 SizedBox(height: 0), // Add spacing between elements
@@ -66,6 +69,12 @@ class HomePage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         // Add your sign in functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignInPage()),
+                        );
+
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
@@ -76,6 +85,11 @@ class HomePage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         // Add your sign up functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignUpPage()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,

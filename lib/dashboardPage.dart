@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guide/guide_page.dart';
-import 'package:guide/main.dart'; // Ensure this is the correct path
+import 'city_search_page.dart';
+import 'myApp.dart'; // Ensure this is the correct path
 
 void main() {
   runApp(MyApp1());
@@ -27,8 +28,8 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int _currentIndex = 0;
   final List<String> _spots = [
-    'images/spot1.png', // Replace with your image assets
-    'images/spot2.png', // Replace with your image assets
+    'assets/images/spot1.png', // Replace with your image assets
+    'assets/images/spot2.png', // Replace with your image assets
   ];
 
   @override
@@ -88,8 +89,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       icon: Icon(Icons.arrow_left, color: Colors.white),
                       onPressed: () {
                         setState(() {
-                          _currentIndex = (_currentIndex - 1 + _spots.length) %
-                              _spots.length;
+                          _currentIndex = (_currentIndex - 1 + _spots.length) % _spots.length;
                         });
                       },
                     ),
@@ -112,7 +112,7 @@ class _DashboardPageState extends State<DashboardPage> {
               children: [
                 Text(
                   'Explore your search',
-                  style: TextStyle(color: Colors.white, fontSize:30,fontStyle:FontStyle.italic),
+                  style: TextStyle(color: Colors.white, fontSize: 30, fontStyle: FontStyle.italic),
                 ),
                 SizedBox(height: 40),
                 Column(
@@ -121,14 +121,14 @@ class _DashboardPageState extends State<DashboardPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => GuidePage()),
+                          MaterialPageRoute(builder: (context) => SignInPage()),
                         );
                       },
                       child: Container(
                         height: 150,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('images/guide.png'),
+                            image: AssetImage('assets/images/guide.png'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(12),
@@ -140,14 +140,14 @@ class _DashboardPageState extends State<DashboardPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => CitiesPage()),
+                          MaterialPageRoute(builder: (context) => CitySearchPage()),
                         );
                       },
                       child: Container(
                         height: 150,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('images/cities.png'),
+                            image: AssetImage('assets/images/cities.png'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(12),
@@ -168,23 +168,15 @@ class _DashboardPageState extends State<DashboardPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => myApp()),
-                );
+                      builder: (context) {
+                        return HomePage();
+                      }),
+                );;
               },
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class CitiesPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Cities')),
-      body: Center(child: Text('Cities Page')),
     );
   }
 }

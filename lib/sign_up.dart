@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SignInPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   String email = '';
   String password = '';
+  String role = 'user'; // default role is 'user'
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: Text('Sign Up'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -40,19 +41,33 @@ class _SignInPageState extends State<SignInPage> {
               ),
               obscureText: true,
             ),
+            DropdownButton<String>(
+              value: role,
+              onChanged: (String? newValue) {
+                setState(() {
+                  role = newValue!;
+                });
+              },
+              items: <String>['user', 'guide']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
             ElevatedButton(
               onPressed: () async {
                 try {
-                  final userCredential = await _auth.signInWithEmailAndPassword(
+                  final userCredential = await _auth.createUserWithEmailAndPassword(
                       email: email, password: password);
-                  final userDoc = await _firestore
-                      .collection('users')
-                      .doc(userCredential.user!.uid)
-                      .get();
-                  final role = userDoc['role'];
+                  await _firestore.collection('users').doc(userCredential.user!.uid).set({
+                    'email': email,
+                    'role': role,
+                  });
                   // Navigate to respective page based on role
                   if (role == 'guide') {
-                    Navigator.pushReplacementNamed(context, '/guidePage');
+                    Navigator.pushReplacementNamed(context, 'lib/myApp.dart');
                   } else {
                     Navigator.pushReplacementNamed(context, '/userPage');
                   }
@@ -60,7 +75,7 @@ class _SignInPageState extends State<SignInPage> {
                   print(e);
                 }
               },
-              child: Text('Sign In'),
+              child: Text('Sign Up'),
             ),
           ],
         ),
