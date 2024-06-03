@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart'; // Import url_launcher
+import 'package:url_launcher/url_launcher.dart';
 
 class ActivityDetail extends StatelessWidget {
   final String title;
@@ -19,8 +19,9 @@ class ActivityDetail extends StatelessWidget {
   });
 
   Future<void> _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
       throw 'Could not launch $url';
     }
@@ -54,43 +55,17 @@ class ActivityDetail extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Vivez une aventure à travers Paradise Valley et dirigez-vous de la ville à la campagne pour voir la vraie nature et respirer l'oxygène pur.",
+                    description,
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(height: 20),
-                  Text(
-                    "Âge: 0-99, 30 pers. maximum par groupe",
-                    style: TextStyle(fontSize: 16),
-                  ),
                   Text(
                     "Durée: $duration",
                     style: TextStyle(fontSize: 16),
                   ),
                   Text(
-                    "Horaire de début: vérifier la disponibilité",
+                    "Prix: $price",
                     style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    "Billet mobile",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    "Guide en direct: arabe, Allemand, Anglais, Français, Espagnol",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Réservez votre place",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "à partir de",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    "$price par adulte",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
@@ -98,7 +73,7 @@ class ActivityDetail extends StatelessWidget {
                       _launchURL(link);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber[800], // Updated parameter name
+                      backgroundColor: Colors.amber[800],
                       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                     ),
                     child: Text(
