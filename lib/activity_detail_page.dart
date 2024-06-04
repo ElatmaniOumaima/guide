@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -13,16 +14,32 @@ class ActivityDetailPage extends StatefulWidget {
 class _ActivityDetailPageState extends State<ActivityDetailPage> {
   late PageController _pageController;
   int _currentPage = 0;
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+
+    _timer = Timer.periodic(Duration(seconds: 2), (Timer timer) {
+      if (_currentPage < (widget.activity['images']?.length ?? 0) - 1) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+
+      _pageController.animateToPage(
+        _currentPage,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   @override
   void dispose() {
     _pageController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -65,7 +82,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                     icon: Icon(Icons.arrow_forward_ios),
                     onPressed: () {
                       if (_currentPage < widget.activity['images'].length - 1) {
-                        _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                        _pageController.nextPage(
+                          duration: Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
                       }
                     },
                   ),
@@ -78,7 +98,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                     icon: Icon(Icons.arrow_back_ios),
                     onPressed: () {
                       if (_currentPage > 0) {
-                        _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                        _pageController.previousPage(
+                          duration: Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
                       }
                     },
                   ),
