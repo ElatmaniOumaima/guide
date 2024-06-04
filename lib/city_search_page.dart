@@ -112,6 +112,9 @@ class _CitySearchPageState extends State<CitySearchPage> {
                         child: Image.network(
                           city['images'][0],
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(Icons.broken_image, size: 50);
+                          },
                         ),
                         footer: GridTileBar(
                           backgroundColor: Colors.black54,
