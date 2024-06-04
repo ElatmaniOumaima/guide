@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'hotel_list_page.dart';  // Import your HotelsListPage
 import 'activity_list_page.dart'; // Import your ActivityListPage
@@ -15,16 +16,32 @@ class CityDetailPage extends StatefulWidget {
 class _CityDetailPageState extends State<CityDetailPage> {
   late PageController _pageController;
   int _currentPage = 0;
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+
+    _timer = Timer.periodic(Duration(seconds: 2), (Timer timer) {
+      if (_currentPage < (widget.city['images']?.length ?? 0) - 1) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+
+      _pageController.animateToPage(
+        _currentPage,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   @override
   void dispose() {
     _pageController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -68,7 +85,7 @@ class _CityDetailPageState extends State<CityDetailPage> {
                     onPressed: () {
                       if (_currentPage < widget.city['images'].length - 1) {
                         _pageController.nextPage(
-                          duration: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
@@ -84,7 +101,7 @@ class _CityDetailPageState extends State<CityDetailPage> {
                     onPressed: () {
                       if (_currentPage > 0) {
                         _pageController.previousPage(
-                          duration: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
