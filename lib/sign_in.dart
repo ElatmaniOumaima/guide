@@ -60,7 +60,7 @@ class _SignInPageState extends State<SignInPage> {
                       if (role == 'guide') {
                         Navigator.pushReplacementNamed(context, '/guidePage');
                       } else {
-                        Navigator.pushReplacementNamed(context, 'lib/myApp.dart');
+                        Navigator.pushReplacementNamed(context, 'lib/myApp');
                       }
                     } else {
                       print("User role mismatch");
