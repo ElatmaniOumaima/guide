@@ -32,7 +32,9 @@ class HomePage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DashboardPage()),
+                            builder: (context) => DashboardPage(
+                                  userName: '',
+                                )),
                       );
                     },
                     child: Text(
@@ -71,10 +73,8 @@ class HomePage extends StatelessWidget {
                         // Add your sign in functionality here
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => SignInPage()),
+                          MaterialPageRoute(builder: (context) => SignInPage()),
                         );
-
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
@@ -87,8 +87,7 @@ class HomePage extends StatelessWidget {
                         // Add your sign up functionality here
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => SignUpPage()),
+                          MaterialPageRoute(builder: (context) => SignUpPage()),
                         );
                       },
                       style: ElevatedButton.styleFrom(

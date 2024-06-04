@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'hotel_list_page.dart';  // Import your HotelsListPage
 import 'activity_list_page.dart'; // Import your ActivityListPage
+import 'restaurant_list_page.dart'; // Import your RestaurantListPage
 
 class CityDetailPage extends StatefulWidget {
   final Map<String, dynamic> city;
@@ -134,7 +135,12 @@ class _CityDetailPageState extends State<CityDetailPage> {
                       SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          // Navigate to restaurants list
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RestaurantListPage(city: widget.city['name']),
+                            ),
+                          );
                         },
                         child: Text('Check Restaurants'),
                       ),

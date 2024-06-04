@@ -38,6 +38,7 @@ dependencies:
   url_launcher: ^6.0.20
   cupertino_icons: ^1.0.6
   gallery_picker: ^0.5.1
+  file_picker: ^8.0.3
 
 
 dev_dependencies:

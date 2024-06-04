@@ -1,26 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:guide/guide_page.dart';
+import 'package:guide/myApp.dart';
 import 'city_search_page.dart';
-import 'myApp.dart'; // Ensure this is the correct path
-
-void main() {
-  runApp(MyApp1());
-}
-
-class MyApp1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Travel Dashboard',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: DashboardPage(), // Set the DashboardPage as the home
-    );
-  }
-}
+import 'guide_page.dart'; // Ensure this is the correct path
 
 class DashboardPage extends StatefulWidget {
+  final String userName;
+
+  DashboardPage({required this.userName});
+
   @override
   _DashboardPageState createState() => _DashboardPageState();
 }
@@ -47,8 +34,8 @@ class _DashboardPageState extends State<DashboardPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Spots',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                      'Welcome, ${widget.userName}!',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     TextButton(
                       onPressed: () {
@@ -89,7 +76,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       icon: Icon(Icons.arrow_left, color: Colors.white),
                       onPressed: () {
                         setState(() {
-                          _currentIndex = (_currentIndex - 1 + _spots.length) % _spots.length;
+                          _currentIndex = (_currentIndex - 1 + _spots.length) %
+                              _spots.length;
                         });
                       },
                     ),
@@ -112,7 +100,10 @@ class _DashboardPageState extends State<DashboardPage> {
               children: [
                 Text(
                   'Explore your search',
-                  style: TextStyle(color: Colors.white, fontSize: 30, fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontStyle: FontStyle.italic),
                 ),
                 SizedBox(height: 40),
                 Column(
@@ -121,7 +112,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SignInPage()),
+                          MaterialPageRoute(builder: (context) => MyApp()),
                         );
                       },
                       child: Container(
@@ -140,7 +131,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => CitySearchPage()),
+                          MaterialPageRoute(
+                              builder: (context) => CitySearchPage()),
                         );
                       },
                       child: Container(
@@ -167,11 +159,10 @@ class _DashboardPageState extends State<DashboardPage> {
                 // Implement home button functionality here
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) {
-                        return HomePage();
-                      }),
-                );;
+                  MaterialPageRoute(builder: (context) {
+                    return HomePage();
+                  }),
+                );
               },
             ),
           ),

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:guide/dashboardPage.dart';
+import 'package:guide/myApp.dart'; // Import the main app page
+import 'package:guide/guide_page.dart'; // Import the guide page
 
 class SignInPage extends StatefulWidget {
   @override
@@ -13,6 +17,17 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String role = 'client'; // default role is 'client'
+  String errorMessage = ''; // To display error messages
+
+  @override
+  void initState() {
+    super.initState();
+    initializeFirebase();
+  }
+
+  Future<void> initializeFirebase() async {
+    await Firebase.initializeApp();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,36 +55,69 @@ class _SignInPageState extends State<SignInPage> {
               ),
               SizedBox(height: 20),
               _buildTextField(_emailController, 'Your Email'),
-              _buildTextField(_passwordController, 'Your Password', obscureText: true),
+              _buildTextField(_passwordController, 'Your Password',
+                  obscureText: true),
               _buildRoleDropdown(),
               SizedBox(height: 20),
+              if (errorMessage.isNotEmpty)
+                Text(
+                  errorMessage,
+                  style: TextStyle(color: Colors.red),
+                ),
+              SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
+                  setState(() {
+                    errorMessage = '';
+                  });
                   try {
-                    final userCredential = await _auth.signInWithEmailAndPassword(
+                    final userCredential =
+                        await _auth.signInWithEmailAndPassword(
                       email: _emailController.text,
                       password: _passwordController.text,
                     );
 
-                    String collection = role == 'client' ? 'users' : 'guides';
                     final userDoc = await _firestore
-                        .collection(collection)
+                        .collection(
+                            'users') // Use 'users' collection for both roles
                         .doc(userCredential.user!.uid)
                         .get();
 
                     if (userDoc.exists) {
-                      // Navigate to respective page based on role
-                      if (role == 'guide') {
-                        Navigator.pushReplacementNamed(context, '/guidePage');
+                      if (userDoc.data()!.containsKey('role')) {
+                        String userRole = userDoc.data()!['role'];
+                        if (userRole == 'client') {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DashboardPage(
+                                    userName: userDoc.data()!['fullName'])),
+                          );
+                        } else if (userRole == 'guide') {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GuidePage()),
+                          );
+                        } else {
+                          setState(() {
+                            errorMessage = 'Unrecognized user role';
+                          });
+                        }
                       } else {
-                        Navigator.pushReplacementNamed(context, '/myApp');
+                        setState(() {
+                          errorMessage = 'Missing user role information';
+                        });
                       }
                     } else {
-                      print("User role mismatch");
+                      setState(() {
+                        errorMessage = "User not found";
+                      });
                     }
                   } catch (e) {
-                    print(e);
-                    _showErrorDialog(context, e.toString());
+                    setState(() {
+                      errorMessage = e.toString();
+                    });
                   }
                 },
                 child: Text('Sign in'),
@@ -87,7 +135,8 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String hintText, {bool obscureText = false}) {
+  Widget _buildTextField(TextEditingController controller, String hintText,
+      {bool obscureText = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
@@ -134,26 +183,6 @@ class _SignInPageState extends State<SignInPage> {
           ),
         ),
       ),
-    );
-  }
-
-  void _showErrorDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Error'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

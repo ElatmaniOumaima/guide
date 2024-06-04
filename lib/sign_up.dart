@@ -44,18 +44,23 @@ class _SignUpPageState extends State<SignUpPage> {
               _buildTextField(_nameController, 'Your Full Name'),
               _buildTextField(_ageController, 'Your Age'),
               _buildTextField(_emailController, 'Your Email'),
-              _buildTextField(_passwordController, 'Your Password', obscureText: true),
+              _buildTextField(_passwordController, 'Your Password',
+                  obscureText: true),
               _buildRoleDropdown(),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
                   try {
-                    final userCredential = await _auth.createUserWithEmailAndPassword(
+                    final userCredential =
+                        await _auth.createUserWithEmailAndPassword(
                       email: _emailController.text,
                       password: _passwordController.text,
                     );
-                    String collection = role == 'client' ? 'users' : 'guides';
-                    await _firestore.collection(collection).doc(userCredential.user!.uid).set({
+
+                    await _firestore
+                        .collection('users')
+                        .doc(userCredential.user!.uid)
+                        .set({
                       'fullName': _nameController.text,
                       'age': _ageController.text,
                       'email': _emailController.text,
@@ -86,7 +91,8 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String hintText, {bool obscureText = false}) {
+  Widget _buildTextField(TextEditingController controller, String hintText,
+      {bool obscureText = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
