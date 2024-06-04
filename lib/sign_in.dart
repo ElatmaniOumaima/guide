@@ -50,23 +50,26 @@ class _SignInPageState extends State<SignInPage> {
                       email: _emailController.text,
                       password: _passwordController.text,
                     );
+
                     String collection = role == 'client' ? 'users' : 'guides';
                     final userDoc = await _firestore
                         .collection(collection)
                         .doc(userCredential.user!.uid)
                         .get();
+
                     if (userDoc.exists) {
                       // Navigate to respective page based on role
                       if (role == 'guide') {
                         Navigator.pushReplacementNamed(context, '/guidePage');
                       } else {
-                        Navigator.pushReplacementNamed(context, 'lib/myApp');
+                        Navigator.pushReplacementNamed(context, '/myApp');
                       }
                     } else {
                       print("User role mismatch");
                     }
                   } catch (e) {
                     print(e);
+                    _showErrorDialog(context, e.toString());
                   }
                 },
                 child: Text('Sign in'),
@@ -131,6 +134,26 @@ class _SignInPageState extends State<SignInPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
