@@ -110,7 +110,7 @@ class _SignInPageState extends State<SignInPage> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: Color(0xFFD9D9D9), // Match the dropdown color
+          color: Color(0xFFB4A8A8), // Match the dropdown color
           borderRadius: BorderRadius.circular(16),
         ),
         child: DropdownButtonHideUnderline(
