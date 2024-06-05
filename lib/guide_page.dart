@@ -21,6 +21,12 @@ class _GuidePageState extends State<GuidePage> {
   bool isAvailable = true;
   String documentId = '';
 
+  @override
+  void initState() {
+    super.initState();
+    fetchGuideData();
+  }
+
   Future<void> pickImage() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
@@ -28,8 +34,8 @@ class _GuidePageState extends State<GuidePage> {
       if (path != null) {
         try {
           final ref =
-              _storage.ref().child('guided_images/${result.files.single.name}');
-          await ref.putFile(File(path));
+          _storage.ref().child('guided_images/${result.files.single.name}');
+          await ref.putFile(File(path!));
           guidedImageUrl = await ref.getDownloadURL();
           setState(() {});
           print('Image uploaded successfully: $guidedImageUrl');
@@ -61,12 +67,15 @@ class _GuidePageState extends State<GuidePage> {
     }
     try {
       if (documentId.isEmpty) {
-        await _firestore.collection('guidedata').add({
+        final docRef = await _firestore.collection('guidedata').add({
           'guidedImageUrl': guidedImageUrl,
           'price': price,
           'city': city,
           'name': name,
           'isAvailable': isAvailable,
+        });
+        setState(() {
+          documentId = docRef.id;
         });
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Guide profile saved successfully')));
@@ -211,8 +220,127 @@ class _GuidePageState extends State<GuidePage> {
                 ],
               ),
             ),
-            Center(
-              child: Text('Reservations Tab Content'),
+            documentId.isEmpty
+                ? Center(child: CircularProgressIndicator())
+                : ReservationsTab(guideId: documentId),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ReservationsTab extends StatefulWidget {
+  final String guideId;
+
+  ReservationsTab({required this.guideId});
+
+  @override
+  _ReservationsTabState createState() => _ReservationsTabState();
+}
+
+class _ReservationsTabState extends State<ReservationsTab> {
+  late Future<List<Map<String, dynamic>>> reservationsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    reservationsFuture = fetchReservations();
+  }
+
+  Future<List<Map<String, dynamic>>> fetchReservations() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('reservations')
+          .where('guideId', isEqualTo: widget.guideId)
+          .get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      print('Error fetching reservations: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error fetching reservations')));
+      return [];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: reservationsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error fetching reservations'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No reservations found'));
+        } else {
+          final reservations = snapshot.data!;
+          return ListView.builder(
+            padding: EdgeInsets.all(16.0),
+            itemCount: reservations.length,
+            itemBuilder: (context, index) {
+              final reservation = reservations[index];
+              return Card(
+                margin: EdgeInsets.symmetric(vertical: 8.0),
+                child: ListTile(
+                  title: Text(reservation['clientName']),
+                  subtitle: Text(reservation['clientEmail']),
+                  trailing: IconButton(
+                    icon: Icon(Icons.message),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MessagePage(
+                            clientEmail: reservation['clientEmail'],
+                            clientName: reservation['clientName'],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        }
+      },
+    );
+  }
+}
+
+class MessagePage extends StatelessWidget {
+  final String clientEmail;
+  final String clientName;
+
+  MessagePage({required this.clientEmail, required this.clientName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Message $clientName'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: Text('Messaging functionality here'),
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'Message',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                // send message functionality here
+              },
+              child: Text('Send'),
             ),
           ],
         ),
