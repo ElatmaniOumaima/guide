@@ -1,37 +1,26 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Guide Reservation App',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
-      home: Guide(),
-    );
-  }
-}
-
 class Guide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GuidesListPage(
-      onReserve: (guideId, guideName) {
-        String clientName = "John Doe"; // Replace with actual client name
-        String clientEmail = "john.doe@example.com"; // Replace with actual client email
-        reserveGuide(context, guideId, guideName, clientName, clientEmail);
+      onReserve: (guideId, guideName) async {
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          String clientName = user.displayName ?? "Client";
+          String clientEmail = user.email ?? "";
+          await reserveGuide(context, guideId, guideName, clientName, clientEmail);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('You must be signed in to reserve a guide')),
+          );
+        }
       },
     );
   }

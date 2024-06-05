@@ -29,16 +29,10 @@ class HomePage extends StatelessWidget {
                     onPressed: () {
                       // Add your skip functionality here
                       // Navigate to dashboard page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DashboardPage(
-                                  userName: '',
-                                )),
-                      );
+
                     },
                     child: Text(
-                      'skip',
+                      '',
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
