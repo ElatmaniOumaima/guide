@@ -88,11 +88,16 @@ class GuidesListPage extends StatelessWidget {
           } else {
             final guides = snapshot.data!;
             return ListView.builder(
+<<<<<<< HEAD
               padding: EdgeInsets.all(8.0),
+=======
+              padding: EdgeInsets.all(16.0),
+>>>>>>> origin/master
               itemCount: guides.length,
               itemBuilder: (context, index) {
                 final guide = guides[index];
                 return Card(
+<<<<<<< HEAD
                   margin: EdgeInsets.all(8.0),
                   child: ListTile(
                     contentPadding: EdgeInsets.all(8.0),
@@ -120,6 +125,78 @@ class GuidesListPage extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.deepPurple[300],
                       ),
+=======
+                  elevation: 5,
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        guide['guidedImageUrl'] != null
+                            ? Image.network(
+                                guide['guidedImageUrl'],
+                                height: 150, // Adjust the height as needed
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (context, child, progress) {
+                                  return progress == null
+                                      ? child
+                                      : Center(
+                                          child: CircularProgressIndicator());
+                                },
+                                errorBuilder: (context, error, stackTrace) {
+                                  return SizedBox(
+                                    height: 150,
+                                    child: Center(
+                                        child: Text('Error loading image')),
+                                  );
+                                },
+                              )
+                            : SizedBox(
+                                height: 150, // Adjust the height as needed
+                                child: Center(child: Text('No Image')),
+                              ),
+                        SizedBox(height: 10),
+                        Text('Name: ${guide['name']}'),
+                        Text('City: ${guide['city']}'),
+                        Text('Price: \$${guide['price']}'),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                onReserve(guide['id'], guide['name']);
+                              },
+                              child: Text('Reserve'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.deepPurple[300],
+                              ),
+                            ),
+                            Row(
+                              children: List.generate(5, (ratingIndex) {
+                                return IconButton(
+                                  icon: Icon(
+                                    Icons.star,
+                                    color: ratingIndex < 3
+                                        ? Colors.amber
+                                        : Colors.grey, // Example rating
+                                  ),
+                                  onPressed: () {
+                                    // Implement ranking logic here
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Rated ${ratingIndex + 1} stars')));
+                                  },
+                                );
+                              }),
+                            ),
+                          ],
+                        ),
+                      ],
+>>>>>>> origin/master
                     ),
                   ),
                 );

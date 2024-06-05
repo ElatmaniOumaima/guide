@@ -14,10 +14,7 @@ class HotelListPage extends StatelessWidget {
         title: Text('Hotels in $city'),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('hotels')
-            .where('city', isEqualTo: city)
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('hotels').where('city', isEqualTo: city).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
@@ -33,8 +30,7 @@ class HotelListPage extends StatelessWidget {
                 margin: EdgeInsets.all(8.0),
                 child: ListTile(
                   contentPadding: EdgeInsets.all(8.0),
-                  leading: hotel['images'] != null &&
-                          (hotel['images'] as List).isNotEmpty
+                  leading: hotel['images'] != null && (hotel['images'] as List).isNotEmpty
                       ? Image.network(
                           hotel['images'][0],
                           fit: BoxFit.cover,
@@ -49,8 +45,7 @@ class HotelListPage extends StatelessWidget {
                     hotel['name'],
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  subtitle:
-                      Text('${hotel['averagePricePerNight']} MAD per night'),
+                  subtitle: Text('${hotel['averagePricePerNight']} MAD per night'),
                   trailing: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
