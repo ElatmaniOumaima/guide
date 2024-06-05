@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guide/guide.dart';
 import 'package:guide/myApp.dart';
 import 'city_search_page.dart';
 import 'guide_page.dart'; // Ensure this is the correct path
@@ -112,7 +113,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyApp()),
+                          MaterialPageRoute(builder: (context) => Guide()),
                         );
                       },
                       child: Container(
