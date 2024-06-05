@@ -30,8 +30,7 @@ class Guide extends StatelessWidget {
     return GuidesListPage(
       onReserve: (guideId, guideName) {
         String clientName = "John Doe"; // Replace with actual client name
-        String clientEmail =
-            "john.doe@example.com"; // Replace with actual client email
+        String clientEmail = "john.doe@example.com"; // Replace with actual client email
         reserveGuide(context, guideId, guideName, clientName, clientEmail);
       },
     );
@@ -88,44 +87,11 @@ class GuidesListPage extends StatelessWidget {
           } else {
             final guides = snapshot.data!;
             return ListView.builder(
-<<<<<<< HEAD
-              padding: EdgeInsets.all(8.0),
-=======
               padding: EdgeInsets.all(16.0),
->>>>>>> origin/master
               itemCount: guides.length,
               itemBuilder: (context, index) {
                 final guide = guides[index];
                 return Card(
-<<<<<<< HEAD
-                  margin: EdgeInsets.all(8.0),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.all(8.0),
-                    leading: guide['guidedImageUrl'] != null
-                        ? Image.network(
-                            guide['guidedImageUrl'],
-                            fit: BoxFit.cover,
-                            width: 100,
-                            height: 100,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Icon(Icons.broken_image, size: 50);
-                            },
-                          )
-                        : Icon(Icons.broken_image, size: 50),
-                    title: Text(
-                      guide['name'],
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text('${guide['price']} \$ per day'),
-                    trailing: ElevatedButton(
-                      onPressed: () {
-                        onReserve(guide['id'], guide['name']);
-                      },
-                      child: Text('Reserve'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple[300],
-                      ),
-=======
                   elevation: 5,
                   margin: EdgeInsets.symmetric(vertical: 10),
                   child: Padding(
@@ -135,28 +101,28 @@ class GuidesListPage extends StatelessWidget {
                       children: [
                         guide['guidedImageUrl'] != null
                             ? Image.network(
-                                guide['guidedImageUrl'],
-                                height: 150, // Adjust the height as needed
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                loadingBuilder: (context, child, progress) {
-                                  return progress == null
-                                      ? child
-                                      : Center(
-                                          child: CircularProgressIndicator());
-                                },
-                                errorBuilder: (context, error, stackTrace) {
-                                  return SizedBox(
-                                    height: 150,
-                                    child: Center(
-                                        child: Text('Error loading image')),
-                                  );
-                                },
-                              )
+                          guide['guidedImageUrl'],
+                          height: 150, // Adjust the height as needed
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, progress) {
+                            return progress == null
+                                ? child
+                                : Center(
+                                child: CircularProgressIndicator());
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return SizedBox(
+                              height: 150,
+                              child: Center(
+                                  child: Text('Error loading image')),
+                            );
+                          },
+                        )
                             : SizedBox(
-                                height: 150, // Adjust the height as needed
-                                child: Center(child: Text('No Image')),
-                              ),
+                          height: 150, // Adjust the height as needed
+                          child: Center(child: Text('No Image')),
+                        ),
                         SizedBox(height: 10),
                         Text('Name: ${guide['name']}'),
                         Text('City: ${guide['city']}'),
@@ -196,7 +162,6 @@ class GuidesListPage extends StatelessWidget {
                           ],
                         ),
                       ],
->>>>>>> origin/master
                     ),
                   ),
                 );
